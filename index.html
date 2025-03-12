@@ -8,8 +8,13 @@
     <!-- Daisy UI and Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .active {
+            background-color: #FF1F3D;
+            color: white;
+        }
+    </style>
 </head>
-
 <body>
     <header>
         <nav class="w-11/12 mx-auto flex items-center justify-between border-b-2 border-b-[#17171720] py-5">
@@ -27,11 +32,14 @@
     </header>
     <main>
         <nav id="category-container" class="flex py-5 justify-center gap-5">
-            <button onclick="loadVideos()" class="btn btn-sm bg-[#FF1F3D] text-white">All</button>
+            <button id="btn-all" onclick="loadVideos()" class="btn btn-sm">All</button>
         </nav>
         <!-- Video Container -->
         <section id="video-container" class="w-11/12 mx-auto grid grid-cols-4 gap-5">
-
+            <div class="col-span-full text-center place-items-center mt-20 space-y-4">
+                <img class="mx-auto" src="Icon.png" alt="Icon">
+                <h2 class="text-2xl font-bold">Opps!! Sorry, There is no content here</h2>
+            </div>
         </section>
     </main>
     <footer>
