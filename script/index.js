@@ -8,21 +8,21 @@ function loadCategories() {
 }
 
 function removeActiveClass() {
-    const activeBtns = document.getElementsByClassName("active");
-    for(let btn of activeBtns) {
-      btn.classList.remove("active");
-    }
-} 
+	const activeBtns = document.getElementsByClassName("active");
+	for (let btn of activeBtns) {
+		btn.classList.remove("active");
+	}
+}
 
 const loadCategoryVideos = (id) => {
 	fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
 		.then((res) => res.json())
 		.then((data) => {
-      removeActiveClass();
-      const clickedBtn = document.getElementById(`btn-${id}`);
-      displayVideos(data.category);
-      clickedBtn.classList.add("active");
-    });
+			removeActiveClass();
+			const clickedBtn = document.getElementById(`btn-${id}`);
+			displayVideos(data.category);
+			clickedBtn.classList.add("active");
+		});
 };
 
 function displayCategories(categories) {
@@ -46,11 +46,38 @@ function loadVideos() {
 	fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
 		.then((res) => res.json())
 		.then((data) => {
-      removeActiveClass();
-      document.getElementById("btn-all").classList.add("active");
-      displayVideos(data.videos);
-    });
+			removeActiveClass();
+			document.getElementById("btn-all").classList.add("active");
+			displayVideos(data.videos);
+		});
 }
+
+const loadVideoDetails = (videoId) => {
+	fetch(
+		`https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`,
+	)
+		.then((res) => res.json())
+		.then((data) => displayVideoDetails(data.video));
+};
+
+const displayVideoDetails = (video) => {
+	document.getElementById("video_details").showModal();
+	const detailsContainer = document.getElementById("details-container");
+
+	detailsContainer.innerHTML = `
+      <div class="card bg-base-100 image-full shadow-sm">
+        <figure>
+          <img
+            src="${video.thumbnail}"
+            alt="${video.title}" />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title">${video.title}</h2>
+          <p>${video.description}</p>
+        </div>
+      </div>
+  `;
+};
 
 const displayVideos = (videos) => {
 	// console.log(videos);
@@ -91,7 +118,7 @@ const displayVideos = (videos) => {
                         </div>
                     </div>
                     <div class="intro">
-                        <h2 class="text-sm font-semibold">Shape of You</h2>
+                        <h2 class="text-sm font-semibold">${video.title}</h2>
                         <p class="text-sm text-gray-400 flex gap-1">${
 							video.authors[0].profile_name
 						} ${
@@ -105,6 +132,9 @@ const displayVideos = (videos) => {
 						} Views</p>
                     </div>
                 </div>
+                <button onclick="loadVideoDetails('${
+					video.video_id
+				}')" class="btn btn-block hover:bg-[#FF1F3D] hover:text-white">Show Details</button>
             </div>
         `;
 
