@@ -32,31 +32,39 @@ function loadVideos() {
 
 const displayVideos = (videos) => {
 	// console.log(videos);
-    const videoContainer = document.getElementById("video-container");
+	const videoContainer = document.getElementById("video-container");
 
-    videos.forEach(video => {
-        // console.log(video);
-        const videoCard = document.createElement("div");
+	videos.forEach((video) => {
+		// console.log(video);
+		const videoCard = document.createElement("div");
 
-        videoCard.innerHTML = `
-            <div class="card bg-base-100 shadow-sm">
-  <figure>
-    <img
-      src="${video.thumbnail}"
-      alt="${video.title}" />
-  </figure>
-  <div class="card-body">
-    <h2 class="card-title">${video.title}</h2>
-    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-    <div class="card-actions justify-end">
-      <button class="btn btn-primary">Buy Now</button>
-    </div>
-  </div>
-</div>
+		videoCard.innerHTML = `
+            <div class="card bg-base-100">
+                <figure class="relative">
+                    <img class="w-full h-36 object-cover" src="${video.thumbnail}" alt="${video.title}" />
+                    <span class="absolute bottom-2 right-2 text-white bg-black/90 px-2 pb-1 text-sm rounded">3hrs 56 min
+                        ago</span>
+                </figure>
+                <div class="flex gap-3 px-0 py-5">
+                    <div class="profile">
+                        <div class="avatar">
+                            <div class="ring-primary ring-offset-base-100 w-6 rounded-full ring ring-offset-2">
+                                <img src="${video.authors[0].profile_picture}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="intro">
+                        <h2 class="text-sm font-semibold">Shape of You</h2>
+                        <p class="text-sm text-gray-400 flex gap-1">${video.authors[0].profile_name} ${(video.authors[0].verified) ? `<img class="w-5 h-5"
+                          src="https://img.icons8.com/?size=96&id=98A4yZTt9abw&format=png" alt="Verified">` : ""}</p>
+                        <p class="text-sm text-gray-400">${video.others.views} Views</p>
+                    </div>
+                </div>
+            </div>
         `;
 
-        videoContainer.append(videoCard);
-    });
-}
+		videoContainer.append(videoCard);
+	});
+};
 
-loadVideos();
+
