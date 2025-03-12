@@ -7,6 +7,15 @@ function loadCategories() {
 		.then((data) => displayCategories(data.categories));
 }
 
+const showLoader = () => {
+	document.getElementById("loader").classList.remove("hidden");
+	document.getElementById("video-container").classList.add("hidden");
+};
+const hideLoader = () => {
+	document.getElementById("loader").classList.add("hidden");
+	document.getElementById("video-container").classList.remove("hidden");
+};
+
 function removeActiveClass() {
 	const activeBtns = document.getElementsByClassName("active");
 	for (let btn of activeBtns) {
@@ -15,6 +24,7 @@ function removeActiveClass() {
 }
 
 const loadCategoryVideos = (id) => {
+	showLoader();
 	fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
 		.then((res) => res.json())
 		.then((data) => {
@@ -40,9 +50,11 @@ function displayCategories(categories) {
 	}
 }
 
-
 function loadVideos(searchText = "") {
-	fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
+	showLoader();
+	fetch(
+		`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`,
+	)
 		.then((res) => res.json())
 		.then((data) => {
 			removeActiveClass();
@@ -52,17 +64,17 @@ function loadVideos(searchText = "") {
 }
 
 const loadVideoDetails = (videoId) => {
-  fetch(
-    `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`,
+	fetch(
+		`https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`,
 	)
-  .then((res) => res.json())
+		.then((res) => res.json())
 		.then((data) => displayVideoDetails(data.video));
 };
 
 const displayVideoDetails = (video) => {
 	document.getElementById("video_details").showModal();
 	const detailsContainer = document.getElementById("details-container");
-  
+
 	detailsContainer.innerHTML = `
       <div class="card bg-base-100 image-full shadow-sm">
         <figure>
@@ -76,33 +88,35 @@ const displayVideoDetails = (video) => {
             </div>
             </div>
             `;
-          };
-          
-          const displayVideos = (videos) => {
-            // console.log(videos);
-            const videoContainer = document.getElementById("video-container");
+};
+
+const displayVideos = (videos) => {
+	// console.log(videos);
+	const videoContainer = document.getElementById("video-container");
 	videoContainer.innerHTML = "";
-  
+
 	if (videos.length === 0) {
-    videoContainer.innerHTML = `
+		videoContainer.innerHTML = `
     <div class="col-span-full text-center place-items-center mt-20 space-y-4">
-    <img class="mx-auto" src="Icon.png" alt="Icon">
-    <h2 class="text-2xl font-bold">Opps!! Sorry, There is no content here</h2>
-            </div>
+      <img class="mx-auto" src="Icon.png" alt="Icon">
+      <h2 class="text-2xl font-bold">Opps!! Sorry, There is no content here</h2>
+    </div>
     `;
+
+		hideLoader();
 		return;
 	}
-  
+
 	videos.forEach((video) => {
-    // console.log(video);
+		// console.log(video);
 		const videoCard = document.createElement("div");
-    
+
 		videoCard.innerHTML = `
             <div class="card bg-base-100">
             <figure class="relative">
             <img class="w-full h-36 object-cover" src="${
-              video.thumbnail
-					}" alt="${video.title}" />
+				video.thumbnail
+			}" alt="${video.title}" />
           <span class="absolute bottom-2 right-2 text-white bg-black/90 px-2 pb-1 text-sm rounded">3hrs 56 min
                         ago</span>
                 </figure>
@@ -136,15 +150,15 @@ const displayVideoDetails = (video) => {
 				}')" class="btn btn-block hover:bg-[#FF1F3D] hover:text-white">Show Details</button>
         </div>
         `;
-        
+
 		videoContainer.append(videoCard);
 	});
+	hideLoader();
 };
 
 loadCategories();
 
-
 document.getElementById("search-input").addEventListener("keyup", (e) => {
-  const input = e.target.value;
-  loadVideos(input);
-})
+	const input = e.target.value;
+	loadVideos(input);
+});
